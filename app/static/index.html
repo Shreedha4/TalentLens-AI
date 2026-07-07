@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalentLens AI | Resume Analyzer & Ranker</title>
+    <meta name="description" content="AI-powered Resume Parser and Matcher built with FastAPI. Upload resumes and compare with job descriptions instantly.">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons for premium UI look -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="glow-bg"></div>
+    <div class="glow-bg-2"></div>
+
+    <header class="app-header">
+        <div class="header-container">
+            <div class="logo">
+                <i data-lucide="cpu" class="logo-icon"></i>
+                <span class="logo-text">Talent<span class="gradient-text">Lens AI</span></span>
+            </div>
+            <div class="header-badge">
+                <span class="pulse-dot"></span>
+                FastAPI Parser Engine v1.0
+            </div>
+        </div>
+    </header>
+
+    <main class="app-container">
+        <section class="control-panel">
+            <div class="glass-card panel-card">
+                <div class="panel-header">
+                    <i data-lucide="briefcase" class="section-icon"></i>
+                    <h2>Job Details</h2>
+                </div>
+                <p class="panel-description">Paste the target job description. We'll use TF-IDF and NLP to extract key requirements and compare them to applicant resumes.</p>
+                <div class="input-group">
+                    <label for="job-desc">Job Description Text</label>
+                    <textarea id="job-desc" placeholder="e.g. We are looking for a Senior Python Developer with 5+ years of experience. Required skills include FastAPI, AWS, Docker, PostgreSQL, and Unit Testing..."></textarea>
+                </div>
+            </div>
+
+            <div class="glass-card panel-card">
+                <div class="panel-header">
+                    <i data-lucide="file-text" class="section-icon"></i>
+                    <h2>Resumes Upload</h2>
+                </div>
+                <p class="panel-description">Upload multiple PDF resumes to analyze and rank. Resumes are parsed and cached locally.</p>
+                
+                <div class="upload-zone" id="drop-zone">
+                    <input type="file" id="file-input" multiple accept=".pdf" class="file-input-hidden">
+                    <div class="upload-prompt">
+                        <div class="upload-icon-container">
+                            <i data-lucide="upload-cloud" class="upload-icon"></i>
+                        </div>
+                        <p class="upload-text-main">Drag & drop candidate PDFs here</p>
+                        <p class="upload-text-sub">or <span class="browse-link">browse files</span></p>
+                        <p class="upload-limit">Supports PDF up to 10MB each</p>
+                    </div>
+                </div>
+
+                <div class="file-list-container" id="file-list-container" style="display: none;">
+                    <h3>Selected Resumes (<span id="file-count">0</span>)</h3>
+                    <ul class="file-list" id="file-list"></ul>
+                </div>
+
+                <button class="btn btn-primary" id="analyze-btn" disabled>
+                    <i data-lucide="sparkles" class="btn-icon"></i>
+                    <span>Analyze & Rank Resumes</span>
+                </button>
+            </div>
+        </section>
+
+        <section class="results-panel">
+            <!-- Initial state -->
+            <div class="empty-state" id="empty-state">
+                <div class="empty-icon-container">
+                    <i data-lucide="pie-chart" class="empty-icon"></i>
+                </div>
+                <h3>Analysis Results Will Appear Here</h3>
+                <p>Provide a job description and upload at least one candidate resume, then click 'Analyze & Rank Resumes' to view matches.</p>
+            </div>
+
+            <!-- Loading state -->
+            <div class="loading-state" id="loading-state" style="display: none;">
+                <div class="loader">
+                    <div class="spinner"></div>
+                </div>
+                <h3>Parsing & Vectorizing Resumes...</h3>
+                <p>Reading PDF pages, matching skills, and computing similarity matrices.</p>
+            </div>
+
+            <!-- Results dashboard -->
+            <div class="results-dashboard" id="results-dashboard" style="display: none;">
+                <div class="stats-grid">
+                    <div class="glass-card stat-card">
+                        <span class="stat-label">Processed Resumes</span>
+                        <span class="stat-value" id="stat-processed">0</span>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <span class="stat-label">Top Similarity Score</span>
+                        <span class="stat-value gradient-text" id="stat-top-score">0%</span>
+                    </div>
+                    <div class="glass-card stat-card">
+                        <span class="stat-label">Avg. Match Score</span>
+                        <span class="stat-value" id="stat-avg-score">0%</span>
+                    </div>
+                </div>
+
+                <div class="results-header">
+                    <h2>Candidate Rankings</h2>
+                    <span class="results-badge" id="results-count-badge">0 Candidates</span>
+                </div>
+
+                <div class="ranking-list" id="ranking-list">
+                    <!-- Cards will be injected dynamically -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>&copy; 2026 TalentLens AI. Production Ready Resume Intelligence Engine.</p>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
